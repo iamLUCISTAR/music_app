@@ -15,19 +15,19 @@ class Songs(Resource):
         return jsonify(response)
 
 
-songs_api.add_resource(Songs, "/details", )
+songs_api.add_resource(Songs, "", )
 
 
 class SongsRating(Resource):
     def get(self):
         request_args = dict(request.args)
         request_data = {"song_id": int(request_args['song_id'])}
-        response = PlaylistManager(request_data).get_rating()
+        response = SongManager(request_data).get_rating()
         return jsonify(response)
 
     def post(self):
         request_data = request.get_json()
-        msg = PlaylistManager(request_data).rate_song()
+        msg = SongManager(request_data).rate_song()
         return msg
 
 
@@ -37,8 +37,7 @@ songs_api.add_resource(SongsRating, "/rating", )
 class Search(Resource):
     def get(self):
         request_args = request.args
-        request_data = {"type": request_args['type'],
-                        "value": request_args['value']}
+        request_data = {"search_value": request_args['search_value']}
         response = SearchManager(request_data).search_item()
         return jsonify(response)
 
