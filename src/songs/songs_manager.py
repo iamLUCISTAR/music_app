@@ -10,26 +10,35 @@ class SongManager:
         self.dao_obj = SongDAO()
 
     def get_song_details(self, ):
-        song_details = self.dao_obj.get_song_details(self.song_id)
-        msg = "No song details"
-        if song_details:
-            msg = "Song details found"
-        return {"msg": msg, "song_details": song_details}
+        try:
+            song_details = self.dao_obj.get_song_details(self.song_id)
+            msg = "No song details"
+            if song_details:
+                msg = "Song details found"
+            return {"msg": msg, "song_details": song_details}
+        except Exception as ex:
+            raise ex
 
     def get_rating(self, ):
-        song_rating = self.dao_obj.get_song_rating(self.song_id)
-        msg = "No ratings"
-        if song_rating['rating_count']:
-            msg = "Ratings found"
-        return {"msg": msg, "rating_info": song_rating}
+        try:
+            song_rating = self.dao_obj.get_song_rating(self.song_id)
+            msg = "No ratings"
+            if song_rating['rating_count']:
+                msg = "Ratings found"
+            return {"msg": msg, "rating_info": song_rating}
+        except Exception as ex:
+            raise ex
 
     def rate_song(self, ):
-        if 0 < self.song_rating <= 5:
-            row_count = self.dao_obj.create_song_rating(self.song_id, self.user_id, self.song_rating)
-            if row_count:
-                return "Song rated successfully!!"
-            return "Song rating failed!!"
-        return "Invalid rating !!"
+        try:
+            if 0 < self.song_rating <= 5:
+                row_count = self.dao_obj.create_song_rating(self.song_id, self.user_id, self.song_rating)
+                if row_count:
+                    return "Song rated successfully!!"
+                return "Song rating failed!!"
+            return "Invalid rating !!"
+        except Exception as ex:
+            raise ex
 
 
 class SearchManager:
@@ -38,8 +47,11 @@ class SearchManager:
         self.dao_obj = SongDAO()
 
     def search_item(self, ):
-        search_results = self.dao_obj.search_item(self.search_value)
-        msg = "No search results"
-        if search_results:
-            msg = "Search results found"
-        return {"msg": msg, "search_results": search_results}
+        try:
+            search_results = self.dao_obj.search_item(self.search_value)
+            msg = "No search results"
+            if search_results:
+                msg = "Search results found"
+            return {"msg": msg, "search_results": search_results}
+        except Exception as ex:
+            raise ex

@@ -1,7 +1,7 @@
 import sqlite3
 from songs.songs_dao import SongDAO
 
-conn = sqlite3.connect("/Users/sharath/PycharmProjects/flask_app/db/music.sqlite", check_same_thread=False)
+conn = sqlite3.connect("/Users/arasakumars/PycharmProjects/flask_app/db/music.sqlite", check_same_thread=False)
 conn.execute("PRAGMA foreign_keys = 1")
 conn.row_factory = sqlite3.Row
 cursor = conn.cursor()
@@ -9,75 +9,98 @@ cursor = conn.cursor()
 
 class PlaylistDAO(SongDAO):
 
-    def get_playlist_details(self, user_id):
-        query = "select * from playlist where user_id = ?"
-        cursor.execute(query, (user_id,))
-        results = cursor.fetchall()
-        if results:
-            return {"playlists": [dict(row) for row in results]}
+    def get_playlist_details(self, user_id, playlist_name=None):
+        try:
+            query = "select * from playlist where user_id = ?"
+            params = (user_id,)
+            if playlist_name:
+                query += " and playlist_name=?"
+                params += (playlist_name,)
+            cursor.execute(query, params)
+            results = cursor.fetchall()
+            return [dict(row) for row in results]
+        except sqlite3.Error as ex:
+            raise ex
+        except Exception as ex:
+            raise ex
 
     def create_playlist(self, playlist_name, user_id):
-        query = "insert into playlist (playlist_name, user_id) values (?,?)"
-        res = cursor.execute(query, (playlist_name, user_id))
-        conn.commit()
-        return res.lastrowid
-
-    def delete_playlist(self, playlist_id):
-        playlist_query = "delete from playlist where playlist_id = ?"
-        song_query = "delete from playlist_song where playlist_id = ?"
-        cursor.execute(song_query, (playlist_id,))
-        cursor.execute(playlist_query, (playlist_id,))
-        conn.commit()
-
-    def update_playlist_name(self, playlist_id, new_playlist_name):
-        query = "update playlist set playlist_name = ? where playlist_id = ?"
-        cursor.execute(query, (new_playlist_name, playlist_id))
-        conn.commit()
-        if cursor.rowcount:
-            return "Playlist name updated"
-        return "Error in updating playlist name"
+        try:
+            query = "insert into playlist (playlist_name, user_id) values (?,?)"
+            res = cursor.execute(query, (playlist_name, user_id))
+            conn.commit()
+            return res.lastrowid
+        except sqlite3.Error as ex:
+            raise ex
+        except Exception as ex:
+            raise ex
 
     def get_playlist_songs(self, playlist_id):
-        query = "select * from playlist_song where playlist_id = ?"
-        cursor.execute(query, (playlist_id,))
-        result = cursor.fetchall()
-        if result:
-            return [dict(row) for row in result]
+        try:
+            query = "select * from playlist_song where playlist_id = ?"
+            cursor.execute(query, (playlist_id,))
+            result = cursor.fetchall()
+            if result:
+                return [dict(row) for row in result]
+        except sqlite3.Error as ex:
+            raise ex
+        except Exception as ex:
+            raise ex
 
-    def create_playlist_songs(self, playlist_id, song_ids):
-        query = "insert into playlist_song (song_id,playlist_id) values (?,?)"
-        resp = {}
-        for song_id in song_ids:
-            if not self.playlist_song_exists(song_id, playlist_id):
-                cursor.execute(query, (song_id, playlist_id))
-                resp[song_id] = "Song added"
-            else:
-                resp[song_id] = "Song already exist"
-        conn.commit()
-        return resp
-
-    def playlist_exist(self, playlist_name, user_id):
-        query = "select playlist_id from playlist where playlist_name = ? and user_id = ?"
-        cursor.execute(query, (playlist_name, user_id))
-        playlist_id = cursor.fetchone()
-        if playlist_id:
-            return dict(playlist_id)['playlist_id']
-
-    def playlist_song_exists(self, song_id, playlist_id):
-        query = "select * from playlist_song where song_id = ? and playlist_id = ?"
-        res = cursor.execute(query, (song_id, playlist_id))
-        if res.fetchall():
-            return True
-        return False
+    def add_playlist_songs(self, playlist_id, song_ids):
+        try:
+            query = "insert into playlist_song (song_id,playlist_id) values (?,?)"
+            resp = {}
+            for song_id in song_ids:
+                if not self.playlist_song_exists(song_id, playlist_id):
+                    cursor.execute(query, (song_id, playlist_id))
+                    resp[song_id] = "Song added in the playlist"
+                else:
+                    resp[song_id] = "Song already in the playlist"
+            conn.commit()
+            return resp
+        except sqlite3.Error as ex:
+            raise ex
+        except Exception as ex:
+            raise ex
 
     def delete_playlist_songs(self, playlist_id, song_ids):
-        query = "delete from playlist_song where song_id = ? and playlist_id = ?"
-        resp = {}
-        for song_id in song_ids:
-            if not self.playlist_song_exists(song_id, playlist_id):
-                resp[song_id] = "Not in playlist"
-            else:
-                cursor.execute(query, (song_id, playlist_id))
-                resp[song_id] = "Deleted from playlist"
-        conn.commit()
-        return resp
+        try:
+            query = "delete from playlist_song where song_id = ? and playlist_id = ?"
+            resp = {}
+            for song_id in song_ids:
+                if not self.playlist_song_exists(song_id, playlist_id):
+                    resp[song_id] = "Song not in the playlist"
+                else:
+                    cursor.execute(query, (song_id, playlist_id))
+                    resp[song_id] = "Song deleted from the playlist"
+            conn.commit()
+            return resp
+        except sqlite3.Error as ex:
+            raise ex
+        except Exception as ex:
+            raise ex
+
+    def playlist_exist(self, playlist_name, user_id):
+        try:
+            query = "select playlist_id from playlist where playlist_name = ? and user_id = ?"
+            cursor.execute(query, (playlist_name, user_id))
+            playlist_id = cursor.fetchone()
+            if playlist_id:
+                return dict(playlist_id)['playlist_id']
+        except sqlite3.Error as ex:
+            raise ex
+        except Exception as ex:
+            raise ex
+
+    def playlist_song_exists(self, song_id, playlist_id):
+        try:
+            query = "select * from playlist_song where song_id = ? and playlist_id = ?"
+            res = cursor.execute(query, (song_id, playlist_id))
+            if res.fetchall():
+                return True
+            return False
+        except sqlite3.Error as ex:
+            raise ex
+        except Exception as ex:
+            raise ex
