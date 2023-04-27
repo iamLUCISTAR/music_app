@@ -8,37 +8,37 @@ playlist_api = Api(playlist_blueprint)
 
 class Playlist(Resource):
     def post(self):
-        request_data = request.get_json()
-        msg = PlaylistManager(request_data).create_playlist()
-        return msg
+        try:
+            request_data = request.get_json()
+            msg = PlaylistManager(request_data).create_playlist()
+            return msg
+        except Exception as ex:
+            resp = jsonify({'message': repr(ex)})
+            resp.status_code = 500
+            return resp
 
     def get(self):
-        request_args = dict(request.args)
-        request_data = {"user_id": int(request_args['user_id'])}
-        response = PlaylistManager(request_data).get_playlist()
-        return jsonify(response)
+        try:
+            request_args = dict(request.args)
+            request_data = {"user_id": int(request_args['user_id']),
+                            "playlist_name": request_args['playlist_name'] if request_args.get(
+                                'playlist_name') else None}
+            response = PlaylistManager(request_data).get_playlist()
+            return jsonify(response)
+        except Exception as ex:
+            resp = jsonify({'message': repr(ex)})
+            resp.status_code = 500
+            return resp
 
     def put(self):
-        pass
+        try:
+            request_data = request.get_json()
+            msg = PlaylistManager(request_data).update_songs()
+            return msg
+        except Exception as ex:
+            resp = jsonify({'message': repr(ex)})
+            resp.status_code = 500
+            return resp
 
 
 playlist_api.add_resource(Playlist, "")
-
-
-class PlaylistSongs(Resource):
-    def get(self):
-        request_args = dict(request.args)
-        request_data = {"user_id": int(request_args['user_id']),
-                        "playlist_name": request_args['playlist_name']}
-        response = PlaylistManager(request_data).get_playlist_songs()
-        return jsonify(response)
-
-    def post(self):
-        request_data = request.get_json()
-        msg = PlaylistManager(request_data).add_songs()
-        return msg
-
-
-playlist_api.add_resource(PlaylistSongs, "/songs")
-
-

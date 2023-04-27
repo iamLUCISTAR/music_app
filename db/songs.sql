@@ -6,10 +6,16 @@ insert into genre (genre_name) values ('rap');
 insert into genre (genre_name) values ('jazz');
 insert into genre (genre_name) values ('rock');
 
-insert into artist (artist_name) values ('yuvan');
-insert into artist (artist_name) values ('harris');
-insert into artist (artist_name) values ('rahman');
-insert into artist (artist_name) values ('gvp');
+insert into artist (artist_name) values ('yuvan shankar raja');
+insert into artist (artist_name) values ('harris jayaraj');
+insert into artist (artist_name) values ('ar rahman');
+insert into artist (artist_name) values ('gv prakash');
+insert into artist (artist_name) values ('santhosh narayanan');
+insert into artist (artist_name) values ('justin bieber');
+insert into artist (artist_name) values ('selena gomez');
+insert into artist (artist_name) values ('katty perry');
+insert into artist (artist_name) values ('maroon 5');
+insert into artist (artist_name) values ('the weeknd');
 
 insert into album (album_name, artist_id) values ('vallavan', 1)
 insert into album (album_name, artist_id) values ('sarvam', 1)
@@ -30,6 +36,12 @@ insert into album (album_name, artist_id) values ('madarasapatinam', 4)
 insert into album (album_name, artist_id) values ('aadukalam', 4)
 insert into album (album_name, artist_id) values ('soorarai potru', 4)
 insert into album (album_name, artist_id) values ('asuran', 4)
+insert into album (album_name, artist_id) values ('kakakapo', 4)
+insert into album (album_name, artist_id) values ('pizza', 4)
+insert into album (album_name, artist_id) values ('karnan', 4)
+insert into album (album_name, artist_id) values ('madras', 4)
+insert into album (album_name, artist_id) values ('irudhi sutru', 4)
+
 
 --yuvan
 insert into song (song_name,artist_id,album_id,genre_id) values ('loose penne',1,1,1);
@@ -55,3 +67,24 @@ insert into song (song_name,artist_id,album_id,genre_id) values ('pookal pookum'
 insert into song (song_name,artist_id,album_id,genre_id) values ('porkalam',4,17,3);
 insert into song (song_name,artist_id,album_id,genre_id) values ('veiyon silli',4,18,4);
 insert into song (song_name,artist_id,album_id,genre_id) values ('asura',4,19,5);
+--sana
+insert into song (song_name,artist_id,album_id,genre_id) values ('akkam pakkam paar',5,20,1);
+insert into song (song_name,artist_id,album_id,genre_id) values ('mogathirai',5,21,2);
+insert into song (song_name,artist_id,album_id,genre_id) values ('kandha vara solunga',5,22,3);
+insert into song (song_name,artist_id,album_id,genre_id) values ('aagayam theepidicha',5,23,4);
+insert into song (song_name,artist_id,album_id,genre_id) values ('hey sandakaara',5,24,5);
+--justin
+insert into song (song_name,artist_id,album_id,genre_id) values ('baby',6,null,1);
+insert into song (song_name,artist_id,album_id,genre_id) values ('let me love you',6,null,2);
+--selena
+insert into song (song_name,artist_id,album_id,genre_id) values ('fetish',7,null,1);
+insert into song (song_name,artist_id,album_id,genre_id) values ('a year without rain',7,null,2);
+--katty
+insert into song (song_name,artist_id,album_id,genre_id) values ('roar',8,null,1);
+insert into song (song_name,artist_id,album_id,genre_id) values ('love me like you do',8,null,2);
+--maroon
+insert into song (song_name,artist_id,album_id,genre_id) values ('girls like you',9,null,3);
+insert into song (song_name,artist_id,album_id,genre_id) values ('memories',9,null,4);
+--weeknd
+insert into song (song_name,artist_id,album_id,genre_id) values ('starboy',10,null,4);
+insert into song (song_name,artist_id,album_id,genre_id) values ('heartless',10,null,1);

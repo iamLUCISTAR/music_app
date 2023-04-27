@@ -10,26 +10,49 @@ class SongManager:
         self.dao_obj = SongDAO()
 
     def get_song_details(self, ):
-        song_details = self.dao_obj.get_song_details(self.song_id)
-        return {"songs": song_details}
+        try:
+            song_details = self.dao_obj.get_song_details(entity_id=self.song_id)
+            msg = "No song details"
+            if song_details:
+                msg = "Song details found"
+            return {"message": msg, "song_details": song_details}
+        except Exception as ex:
+            raise ex
 
     def get_rating(self, ):
-        song_rating = self.dao_obj.get_song_rating(self.song_id)
-        return {"song_id": self.song_id,
-                "rating_info": song_rating}
+        try:
+            song_rating = self.dao_obj.get_song_rating(self.song_id)
+            msg = "No ratings"
+            if song_rating['rating_count']:
+                msg = "Ratings found"
+            return {"message": msg, "rating_info": song_rating}
+        except Exception as ex:
+            raise ex
 
     def rate_song(self, ):
-        if 0 < self.song_rating <= 5:
-            return self.dao_obj.create_song_rating(self.song_id, self.user_id, self.song_rating)
-        return "Invalid rating"
+        try:
+            msg = "Invalid rating !!"
+            if 0 < self.song_rating <= 5:
+                row_count = self.dao_obj.create_song_rating(self.song_id, self.user_id, self.song_rating)
+                msg = "Song rating failed!!"
+                if row_count:
+                    msg = "Song rated successfully!!"
+            return {"message": msg}
+        except Exception as ex:
+            raise ex
 
 
 class SearchManager:
     def __init__(self, request_data):
-        self.search_type = request_data['type'] if request_data.get('type') else None
-        self.search_value = request_data['value'] if request_data.get('value') else None
+        self.search_value = request_data['search_value'] if request_data.get('search_value') else None
         self.dao_obj = SongDAO()
 
     def search_item(self, ):
-        songs = self.dao_obj.search_item(self.search_type, self.search_value)
-        return {"songs": songs}
+        try:
+            search_results = self.dao_obj.search_item(self.search_value)
+            msg = "No search results"
+            if search_results:
+                msg = "Search results found"
+            return {"message": msg, "search_results": search_results}
+        except Exception as ex:
+            raise ex
