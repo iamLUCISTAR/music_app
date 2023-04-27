@@ -43,7 +43,7 @@ class RecommendationManager:
                     by_user_id = recommendation['by_user_id']
                     response_dict[entity].append({'details': details, 'by_user': by_user_id})
                 msg = "User recommendations found"
-            return {"msg": msg,
+            return {"message": msg,
                     "recommendations": response_dict}
         except Exception as ex:
             raise ex
@@ -72,7 +72,7 @@ class RecommendationManager:
                     suggestion_genre = max(genre, key=genre.count)
                     suggestion_album = max(album, key=album.count)
                     msg = "Songs suggested for the user"
-            return {'msg': msg,
+            return {'message': msg,
                     'recommended_artist': suggestion_artist,
                     'recommended_genre': suggestion_genre,
                     'recommended_album': suggestion_album}

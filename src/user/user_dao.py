@@ -5,11 +5,12 @@ conn.execute("PRAGMA foreign_keys = 1")
 conn.row_factory = sqlite3.Row
 cursor = conn.cursor()
 
+
 class UserDao:
 
     def user_exist(self, email_id):
         try:
-            query = "select user_id from user where email_id = ?"
+            query = "select * from user where email_id = ?"
             cursor.execute(query, (email_id,))
             return cursor.fetchone()
 
@@ -17,11 +18,10 @@ class UserDao:
             print(ex)
             raise
 
-
-    def create_user(self, user_name, email_id, password):
+    def create_user(self, user_name, email_id, password, created_datetime):
         try:
-            query = "insert into user (user_name,email_id,password) values (?,?,?)"
-            cursor.execute(query,(user_name,email_id,password))
+            query = "insert into user (user_name,email_id,password,created_datetime) values (?,?,?,?)"
+            cursor.execute(query, (user_name, email_id, password, created_datetime))
             conn.commit()
 
         except Exception as ex:
@@ -39,6 +39,7 @@ class UserDao:
         except Exception as ex:
             print(ex)
             raise
+
 
 if __name__ == "__main__":
     res = user_exist("gom@gmail.com")

@@ -22,7 +22,8 @@ query = """ create table user
             (user_id integer primary key autoincrement,
              user_name varchar,
              email_id varchar,
-             password varchar)"""
+             password varchar,
+             )"""
 
 query2 = """ create table song
              (song_id integer primary key autoincrement,
