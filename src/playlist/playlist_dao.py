@@ -54,7 +54,7 @@ class PlaylistDAO(SongDAO):
             for song_id in song_ids:
                 if not self.playlist_song_exists(song_id, playlist_id):
                     cursor.execute(query, (song_id, playlist_id))
-                    resp[song_id] = "Song added in the playlist"
+                    resp[song_id] = "Song added to the playlist"
                 else:
                     resp[song_id] = "Song already in the playlist"
             conn.commit()

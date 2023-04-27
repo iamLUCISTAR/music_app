@@ -21,7 +21,7 @@ class PlaylistManager:
                     song_details = []
                     if playlist_songs:
                         for song in playlist_songs:
-                            song_details.extend(self.dao_obj.get_song_details(song['song_id']))
+                            song_details.extend(self.dao_obj.get_song_details(entity_id=song['song_id']))
                     playlist['songs'] = song_details
             return {"msg": msg, "playlists": playlists}
         except Exception as ex:

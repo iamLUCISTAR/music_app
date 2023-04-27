@@ -7,14 +7,14 @@ cursor = conn.cursor()
 
 
 class SongDAO:
-    def get_song_details(self, song_id=None):
+    def get_song_details(self, entity_type='song_id', entity_id=None):
         try:
             query = "select song_id, song_name, artist_name, album_name, genre_name from song s " \
                     "join genre g on g.genre_id = s.genre_id " \
                     "join artist at on at.artist_id = s.artist_id " \
                     "join album al on al.album_id = s.album_id"
-            if song_id:
-                query += f" where song_id = {song_id}"
+            if entity_id:
+                query += f" where s.{entity_type} = {entity_id}"
 
             res = cursor.execute(query)
             return [dict(row) for row in res.fetchall()]
@@ -23,11 +23,11 @@ class SongDAO:
         except Exception as ex:
             raise ex
 
-    def get_album_details(self, album_id=None):
+    def get_album_details(self, entity_id=None):
         try:
             query = "select * from album join artist on album.artist_id = artist.artist_id"
-            if album_id:
-                query += f" where album_id = {album_id}"
+            if entity_id:
+                query += f" where album_id = {entity_id}"
             res = cursor.execute(query)
             return [dict(row) for row in res.fetchall()]
         except sqlite3.Error as ex:
@@ -35,11 +35,11 @@ class SongDAO:
         except Exception as ex:
             raise ex
 
-    def get_artist_details(self, artist_id=None):
+    def get_artist_details(self, entity_id=None):
         try:
             query = "select * from artist"
-            if artist_id:
-                query += f" where artist_id = {artist_id}"
+            if entity_id:
+                query += f" where artist_id = {entity_id}"
             res = cursor.execute(query)
             return [dict(row) for row in res.fetchall()]
         except sqlite3.Error as ex:
@@ -47,11 +47,11 @@ class SongDAO:
         except Exception as ex:
             raise ex
 
-    def get_genre_details(self, genre_id=None):
+    def get_genre_details(self, entity_id=None):
         try:
             query = "select * from genre"
-            if genre_id:
-                query += f" where genre_id = {genre_id}"
+            if entity_id:
+                query += f" where genre_id = {entity_id}"
             res = cursor.execute(query)
             return [dict(row) for row in res.fetchall()]
 
@@ -106,7 +106,7 @@ class SongDAO:
                     song_ids.update([dict(row)['song_id'] for row in result])
             if song_ids:
                 for song_id in song_ids:
-                    search_result.extend(self.get_song_details(song_id))
+                    search_result.extend(self.get_song_details(entity_id=song_id))
             return search_result
 
         except sqlite3.Error as ex:

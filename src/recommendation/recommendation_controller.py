@@ -3,19 +3,53 @@ from flask import Blueprint, request, jsonify
 from .recommendation_manager import RecommendationManager
 
 recommendation_blueprint = Blueprint('recommendations', __name__, url_prefix="/recommendations")
-playlist_api = Api(recommendation_blueprint)
+recommendation_api = Api(recommendation_blueprint)
 
 
-class Recommendation(Resource):
+class UserRecommendation(Resource):
     def get(self):
-        request_data = {"user_id": int(dict(request.args)['user_id'])}
-        response = RecommendationManager(request_data).get_recommendation()
-        return jsonify(response)
+        try:
+            request_data = {"user_id": int(dict(request.args)['user_id'])}
+            response = RecommendationManager(request_data).get_user_recommendation()
+            return jsonify(response)
+        except Exception as ex:
+            raise ex
 
     def post(self):
-        request_data = request.get_json()
-        msg = RecommendationManager(request_data).create_recommendation()
-        return msg
+        try:
+            request_data = request.get_json()
+            msg = RecommendationManager(request_data).create_user_recommendation()
+            return msg
+        except Exception as ex:
+            raise
 
 
-playlist_api.add_resource(Recommendation, "")
+recommendation_api.add_resource(UserRecommendation, "/user")
+
+
+class SongsRecommendation(Resource):
+    def get(self):
+        try:
+            request_args = request.args
+            request_dict = {'user_id': request_args['user_id']}
+            response = RecommendationManager(request_dict).get_songs_recommendation()
+            return jsonify(response)
+        except Exception as ex:
+            raise ex
+
+
+recommendation_api.add_resource(SongsRecommendation, "/songs")
+
+
+class PlaylistRecommendation(Resource):
+    def get(self):
+        try:
+            request_args = request.args
+            request_dict = {'user_id': request_args['user_id']}
+            resp = RecommendationManager(request_dict).get_playlist_recommendation()
+            return jsonify(resp)
+        except Exception as ex:
+            raise ex
+
+
+recommendation_api.add_resource(PlaylistRecommendation, "/playlists")

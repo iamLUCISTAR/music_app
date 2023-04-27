@@ -11,7 +11,7 @@ class SongManager:
 
     def get_song_details(self, ):
         try:
-            song_details = self.dao_obj.get_song_details(self.song_id)
+            song_details = self.dao_obj.get_song_details(entity_id=self.song_id)
             msg = "No song details"
             if song_details:
                 msg = "Song details found"
