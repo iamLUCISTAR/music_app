@@ -1,7 +1,7 @@
 
 # REST API's - Music App
 
-This application provided the backend services of a music application like searching song, creating playlists, recommending songs to the user and much more. This application was developed using FLASK framework.
+This application provided the backend services of a music application like searching songs, creating playlists, recommending songs to the user and much more. This application was developed using FLASK framework.
 
 ## Run Locally
 
@@ -86,7 +86,7 @@ The yaml file can be found in the design/api_docs.yml directory which has the ap
 - User can create his own playlist with a list of songs or also without songs and add songs later.
 - User can add or remove songs from his playlist
 
-4.  Recomendation - service
+4.  Recommendation - service
 - User can recommend a particular song/album/artist/genre to the other users using the service.
 - System will recommend songs to the user by monitoring the songs in the playlist and user's listening style.
 - System will also create playlist on its own based on artist/genre and suggests it to the user.
