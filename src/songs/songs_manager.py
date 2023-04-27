@@ -15,7 +15,7 @@ class SongManager:
             msg = "No song details"
             if song_details:
                 msg = "Song details found"
-            return {"msg": msg, "song_details": song_details}
+            return {"message": msg, "song_details": song_details}
         except Exception as ex:
             raise ex
 
@@ -25,18 +25,19 @@ class SongManager:
             msg = "No ratings"
             if song_rating['rating_count']:
                 msg = "Ratings found"
-            return {"msg": msg, "rating_info": song_rating}
+            return {"message": msg, "rating_info": song_rating}
         except Exception as ex:
             raise ex
 
     def rate_song(self, ):
         try:
+            msg = "Invalid rating !!"
             if 0 < self.song_rating <= 5:
                 row_count = self.dao_obj.create_song_rating(self.song_id, self.user_id, self.song_rating)
+                msg = "Song rating failed!!"
                 if row_count:
-                    return "Song rated successfully!!"
-                return "Song rating failed!!"
-            return "Invalid rating !!"
+                    msg = "Song rated successfully!!"
+            return {"message": msg}
         except Exception as ex:
             raise ex
 
@@ -52,6 +53,6 @@ class SearchManager:
             msg = "No search results"
             if search_results:
                 msg = "Search results found"
-            return {"msg": msg, "search_results": search_results}
+            return {"message": msg, "search_results": search_results}
         except Exception as ex:
             raise ex

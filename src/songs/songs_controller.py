@@ -15,7 +15,9 @@ class Songs(Resource):
             response = SongManager(request_data).get_song_details()
             return jsonify(response)
         except Exception as ex:
-            raise ex
+            resp = jsonify({'message': repr(ex)})
+            resp.status_code = 500
+            return resp
 
 
 songs_api.add_resource(Songs, "", )
@@ -29,7 +31,9 @@ class SongsRating(Resource):
             response = SongManager(request_data).get_rating()
             return jsonify(response)
         except Exception as ex:
-            raise ex
+            resp = jsonify({'message': repr(ex)})
+            resp.status_code = 500
+            return resp
 
     def post(self):
         try:
@@ -37,7 +41,9 @@ class SongsRating(Resource):
             msg = SongManager(request_data).rate_song()
             return msg
         except Exception as ex:
-            raise ex
+            resp = jsonify({'message': repr(ex)})
+            resp.status_code = 500
+            return resp
 
 
 songs_api.add_resource(SongsRating, "/rating", )
@@ -51,7 +57,9 @@ class Search(Resource):
             response = SearchManager(request_data).search_item()
             return jsonify(response)
         except Exception as ex:
-            raise ex
+            resp = jsonify({'message': repr(ex)})
+            resp.status_code = 500
+            return resp
 
 
 songs_api.add_resource(Search, "/search")

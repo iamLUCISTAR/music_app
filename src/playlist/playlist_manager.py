@@ -23,18 +23,18 @@ class PlaylistManager:
                         for song in playlist_songs:
                             song_details.extend(self.dao_obj.get_song_details(entity_id=song['song_id']))
                     playlist['songs'] = song_details
-            return {"msg": msg, "playlists": playlists}
+            return {"message": msg, "playlists": playlists}
         except Exception as ex:
             raise ex
 
     def create_playlist(self, ):
         try:
             if self.dao_obj.playlist_exist(self.playlist_name, self.user_id):
-                return 'Playlist already exist'
+                return {"message": "Playlist already exist"}
             playlist_id = self.dao_obj.create_playlist(self.playlist_name, self.user_id)
             if self.song_ids:
                 self.dao_obj.add_playlist_songs(playlist_id, self.song_ids)
-            return "Playlist created"
+            return {"message": "Playlist created"}
         except Exception as ex:
             raise ex
 
@@ -42,11 +42,15 @@ class PlaylistManager:
         try:
             playlist_id = self.dao_obj.playlist_exist(self.playlist_name, self.user_id)
             msg = 'Playlist not found'
+            playlist_details = None
             if playlist_id:
                 if self.action == 'add':
-                    msg = self.dao_obj.add_playlist_songs(playlist_id, self.song_ids)
+                    self.dao_obj.add_playlist_songs(playlist_id, self.song_ids)
+                    msg = "Songs added"
                 else:
-                    msg = self.dao_obj.delete_playlist_songs(playlist_id, self.song_ids)
-            return msg
+                    self.dao_obj.delete_playlist_songs(playlist_id, self.song_ids)
+                    msg = "Songs deleted"
+                playlist_details = self.get_playlist()['playlists']
+            return {"message": msg, "updated_playlist": playlist_details}
         except Exception as ex:
             raise ex

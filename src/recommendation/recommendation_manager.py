@@ -16,10 +16,10 @@ class RecommendationManager:
     def create_user_recommendation(self, ):
         try:
             if self.dao_obj.recommendation_exist(self.entity_type, self.entity_id, self.to_user):
-                return "User recommendation already exist!!"
+                return {"message": "User recommendation already exist!!"}
             recommendation_id = self.dao_obj.create_recommendation(self.entity_type, self.entity_id, self.by_user, self.to_user)
             if recommendation_id:
-                return "User recommendation created!!"
+                return {"message": "User recommendation created!!"}
         except Exception as ex:
             raise ex
 
@@ -65,7 +65,8 @@ class RecommendationManager:
                         for song in playlist['songs']:
                             artist.append(song['artist_name'])
                             genre.append(song['genre_name'])
-                            album.append(song['album_name'])
+                            if song.get('album_name'):
+                                album.append(song['album_name'])
                 msg = "No song suggestions, as the user has no songs in the playlists"
                 if artist:
                     suggestion_artist = max(artist, key=artist.count)

@@ -1,7 +1,7 @@
 import sqlite3
 from songs.songs_dao import SongDAO
 
-conn = sqlite3.connect("/Users/arasakumars/PycharmProjects/flask_app/db/music.sqlite", check_same_thread=False)
+conn = sqlite3.connect("/Users/sharathb/PycharmProjects/music_app/db/music.sqlite", check_same_thread=False)
 conn.execute("PRAGMA foreign_keys = 1")
 conn.row_factory = sqlite3.Row
 cursor = conn.cursor()
@@ -50,15 +50,10 @@ class PlaylistDAO(SongDAO):
     def add_playlist_songs(self, playlist_id, song_ids):
         try:
             query = "insert into playlist_song (song_id,playlist_id) values (?,?)"
-            resp = {}
             for song_id in song_ids:
                 if not self.playlist_song_exists(song_id, playlist_id):
                     cursor.execute(query, (song_id, playlist_id))
-                    resp[song_id] = "Song added to the playlist"
-                else:
-                    resp[song_id] = "Song already in the playlist"
             conn.commit()
-            return resp
         except sqlite3.Error as ex:
             raise ex
         except Exception as ex:
@@ -67,15 +62,10 @@ class PlaylistDAO(SongDAO):
     def delete_playlist_songs(self, playlist_id, song_ids):
         try:
             query = "delete from playlist_song where song_id = ? and playlist_id = ?"
-            resp = {}
             for song_id in song_ids:
-                if not self.playlist_song_exists(song_id, playlist_id):
-                    resp[song_id] = "Song not in the playlist"
-                else:
+                if self.playlist_song_exists(song_id, playlist_id):
                     cursor.execute(query, (song_id, playlist_id))
-                    resp[song_id] = "Song deleted from the playlist"
             conn.commit()
-            return resp
         except sqlite3.Error as ex:
             raise ex
         except Exception as ex:

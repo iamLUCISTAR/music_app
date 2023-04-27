@@ -13,7 +13,9 @@ class UserRecommendation(Resource):
             response = RecommendationManager(request_data).get_user_recommendation()
             return jsonify(response)
         except Exception as ex:
-            raise ex
+            resp = jsonify({'message': repr(ex)})
+            resp.status_code = 500
+            return resp
 
     def post(self):
         try:
@@ -21,7 +23,9 @@ class UserRecommendation(Resource):
             msg = RecommendationManager(request_data).create_user_recommendation()
             return msg
         except Exception as ex:
-            raise
+            resp = jsonify({'message': repr(ex)})
+            resp.status_code = 500
+            return resp
 
 
 recommendation_api.add_resource(UserRecommendation, "/user")
@@ -35,7 +39,9 @@ class SongsRecommendation(Resource):
             response = RecommendationManager(request_dict).get_songs_recommendation()
             return jsonify(response)
         except Exception as ex:
-            raise ex
+            resp = jsonify({'message': repr(ex)})
+            resp.status_code = 500
+            return resp
 
 
 recommendation_api.add_resource(SongsRecommendation, "/songs")
@@ -49,7 +55,9 @@ class PlaylistRecommendation(Resource):
             resp = RecommendationManager(request_dict).get_playlist_recommendation()
             return jsonify(resp)
         except Exception as ex:
-            raise ex
+            resp = jsonify({'message': repr(ex)})
+            resp.status_code = 500
+            return resp
 
 
 recommendation_api.add_resource(PlaylistRecommendation, "/playlists")

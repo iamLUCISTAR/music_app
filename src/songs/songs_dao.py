@@ -1,6 +1,6 @@
 import sqlite3
 
-conn = sqlite3.connect("/Users/arasakumars/PycharmProjects/flask_app/db/music.sqlite", check_same_thread=False)
+conn = sqlite3.connect("/Users/sharathb/PycharmProjects/music_app/db/music.sqlite", check_same_thread=False)
 conn.execute("PRAGMA foreign_keys = 1")
 conn.row_factory = sqlite3.Row
 cursor = conn.cursor()
@@ -12,7 +12,7 @@ class SongDAO:
             query = "select song_id, song_name, artist_name, album_name, genre_name from song s " \
                     "join genre g on g.genre_id = s.genre_id " \
                     "join artist at on at.artist_id = s.artist_id " \
-                    "join album al on al.album_id = s.album_id"
+                    "left join album al on al.album_id = s.album_id"
             if entity_id:
                 query += f" where s.{entity_type} = {entity_id}"
 
@@ -113,7 +113,3 @@ class SongDAO:
             raise ex
         except Exception as ex:
             raise ex
-
-
-if __name__ == "__main__":
-    print(SongDAO().get_song_details())

@@ -1,6 +1,6 @@
 import sqlite3
 
-conn = sqlite3.connect("/Users/arasakumars/PycharmProjects/flask_app/db/music.sqlite", check_same_thread=False)
+conn = sqlite3.connect("/Users/sharathb/PycharmProjects/music_app/db/music.sqlite", check_same_thread=False)
 conn.execute("PRAGMA foreign_keys = 1")
 conn.row_factory = sqlite3.Row
 cursor = conn.cursor()
@@ -15,8 +15,7 @@ class UserDao:
             return cursor.fetchone()
 
         except Exception as ex:
-            print(ex)
-            raise
+            raise ex
 
     def create_user(self, user_name, email_id, password, created_datetime):
         try:
@@ -25,8 +24,7 @@ class UserDao:
             conn.commit()
 
         except Exception as ex:
-            print(ex)
-            raise
+            raise ex
 
     def get_user_details(self, user_id=None):
         try:
@@ -37,10 +35,5 @@ class UserDao:
             return [dict(row) for row in cursor.fetchall()]
 
         except Exception as ex:
-            print(ex)
-            raise
+            raise ex
 
-
-if __name__ == "__main__":
-    res = user_exist("gom@gmail.com")
-    print(res)

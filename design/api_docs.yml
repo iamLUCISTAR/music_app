@@ -32,7 +32,6 @@ paths:
           explode: true
           schema:
             type: string
-            default: None
 
       responses:
         '200':
@@ -83,11 +82,10 @@ paths:
         - name: song_id
           in: query
           description: song id of the song
-          required: false
+          required: true
           explode: true
           schema:
             type: string
-            default: None
       responses:
         '200':
           description: successful operation
@@ -108,8 +106,6 @@ paths:
                         song_id:
                           type: integer
                           example: 1
-      security:
-        - api_key: []
   /songs/search:
     get:
       tags:
@@ -135,7 +131,7 @@ paths:
                   songs:
                     type: array
                     items:
-                      $ref: '#components/schemas/Song'
+                      $ref: '#/components/schemas/Song'
 
   /playlists:
     post:
@@ -208,8 +204,8 @@ paths:
     put:
       tags:
         - playlist
-      summary: Add or remove songs
-      description: Add or remove songs in a playlist
+      summary: Add or remove songs in a playlist
+      description: User can add or delete songs in his playlist
       requestBody:
         description: Song ids to be added or deleted
         content:
@@ -233,7 +229,7 @@ paths:
                   example: [2,3,4]
       responses:
         '200':
-          description: Playlist deleted
+          description: Playlist updated
 
   /recommendations/user:
     post:
@@ -248,7 +244,7 @@ paths:
             schema:
               type: object
               properties:
-                entity:
+                entity_type:
                   type: string
                   example: album
                 entity_id:

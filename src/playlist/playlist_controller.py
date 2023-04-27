@@ -13,7 +13,9 @@ class Playlist(Resource):
             msg = PlaylistManager(request_data).create_playlist()
             return msg
         except Exception as ex:
-            raise ex
+            resp = jsonify({'message': repr(ex)})
+            resp.status_code = 500
+            return resp
 
     def get(self):
         try:
@@ -24,7 +26,9 @@ class Playlist(Resource):
             response = PlaylistManager(request_data).get_playlist()
             return jsonify(response)
         except Exception as ex:
-            raise ex
+            resp = jsonify({'message': repr(ex)})
+            resp.status_code = 500
+            return resp
 
     def put(self):
         try:
@@ -32,7 +36,9 @@ class Playlist(Resource):
             msg = PlaylistManager(request_data).update_songs()
             return msg
         except Exception as ex:
-            raise ex
+            resp = jsonify({'message': repr(ex)})
+            resp.status_code = 500
+            return resp
 
 
 playlist_api.add_resource(Playlist, "")

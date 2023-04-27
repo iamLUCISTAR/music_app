@@ -32,13 +32,11 @@ class UserManager:
             user_details = self.user_dao.user_exist(self.email_id)
             if user_details:
                 if check_password_hash(user_details['password'], self.password):
-                    print(session)
                     if user_details['user_name'] in session:
-                        user_name = session[user_details['user_name']]
+                        user_name = user_details['user_name']
                         return jsonify({"message": f"{user_name} already logged in"})
                     else:
                         session[user_details['user_name']] = self.password
-                        print(session)
                         return jsonify({"message": "Login successful"})
 
             resp = jsonify({"message": "Bad Request - invalid credentials"})
